@@ -1,0 +1,25 @@
+{
+  "name": "react-quiz-kit",
+  "version": "1.0.0",
+  "description": "library for creating quizzes on react",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MRSevim/react-quiz-kit.git"
+  },
+  "keywords": [
+    "quiz",
+    "react",
+    "hooks",
+    "components"
+  ],
+  "author": "Muhammed Raşid Sevim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MRSevim/react-quiz-kit/issues"
+  },
+  "homepage": "https://github.com/MRSevim/react-quiz-kit#readme"
+}

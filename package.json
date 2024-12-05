@@ -2,8 +2,12 @@
   "name": "react-quiz-kit",
   "version": "1.0.0",
   "description": "library for creating quizzes on react",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
+    "server": "tsc --watch",
+    "build": "tsc",
+    "serve": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +25,14 @@
   "bugs": {
     "url": "https://github.com/MRSevim/react-quiz-kit/issues"
   },
-  "homepage": "https://github.com/MRSevim/react-quiz-kit#readme"
+  "homepage": "https://github.com/MRSevim/react-quiz-kit#readme",
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@types/react": "^18.3.13",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1"
+  }
 }

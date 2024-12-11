@@ -1,1 +1,1 @@
-export * from "./contexts/quizContext";
+export * from "./contexts";

@@ -1,17 +1,31 @@
 import React, { createContext, useContext } from "react";
 import PropTypes from "prop-types";
+import { Provider } from "react-redux";
+import { store, useAppSelector, useAppDispatch } from "../redux/store";
+import { setInitialState } from "../redux/slices/quizSlice";
 
-const QuizContext = createContext<Quiz | null>(null);
+const QuizContext = createContext<QuizState | null>(null);
 
-export const QuizProvider = ({
-  children,
-  quiz,
-}: {
+type Props = {
   children: React.ReactNode;
-  quiz: Quiz;
-}) => {
+  quizData: QuizData;
+};
+
+export const QuizProvider = (props: Props) => {
+  return (
+    <Provider store={store}>
+      <QuizContextProvider {...props} />
+    </Provider>
+  );
+};
+
+const QuizContextProvider = ({ children, quizData }: Props) => {
+  const dispatch = useAppDispatch();
+  dispatch(setInitialState(quizData));
+  const quiz = useAppSelector((state) => state.quiz);
   return <QuizContext.Provider value={quiz}>{children}</QuizContext.Provider>;
 };
+
 export const useQuiz = () => {
   const context = useContext(QuizContext);
 
@@ -22,7 +36,7 @@ export const useQuiz = () => {
 };
 // Adding PropTypes validation for runtime
 QuizProvider.propTypes = {
-  quiz: PropTypes.shape({
+  quizData: PropTypes.shape({
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     questions: PropTypes.arrayOf(

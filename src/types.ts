@@ -1,4 +1,4 @@
-interface Quiz {
+interface QuizData {
   title: string; // Title of the quiz
   description?: string; // Optional description
   questions: Question[]; // Array of questions
@@ -21,10 +21,9 @@ interface UserResponse {
   isCorrect: boolean; // Whether the answer was correct
 }
 
-interface QuizContextState {
-  quiz: Quiz;
-  currentQuestionIndex: number;
-  userResponses: UserResponse[];
-  score: number;
-  updateAnswer: (questionId: string, answer: string | string[]) => void;
+interface QuizState {
+  quizData: QuizData | null;
+  currentQuestionIndex: number | null;
+  userResponses: UserResponse[] | null;
+  score: number | null;
 }

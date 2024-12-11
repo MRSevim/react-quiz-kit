@@ -1,10 +1,8 @@
-import React, { createContext, useContext } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
-import { store, useAppSelector, useAppDispatch } from "../redux/store";
-import { setInitialState } from "../redux/slices/quizSlice";
-
-const QuizContext = createContext<QuizState | null>(null);
+import { store, useAppDispatch } from "./store";
+import { setInitialState } from "./slices/quizSlice";
 
 type Props = {
   children: React.ReactNode;
@@ -21,19 +19,20 @@ export const QuizProvider = (props: Props) => {
 
 const QuizContextProvider = ({ children, quizData }: Props) => {
   const dispatch = useAppDispatch();
-  dispatch(setInitialState(quizData));
-  const quiz = useAppSelector((state) => state.quiz);
-  return <QuizContext.Provider value={quiz}>{children}</QuizContext.Provider>;
-};
 
-export const useQuiz = () => {
-  const context = useContext(QuizContext);
+  // Check for duplicate IDs in quizData.questions
+  const ids = quizData.questions.map((question) => question.id);
+  const uniqueIds = new Set(ids);
 
-  if (!context) {
-    throw new Error("useQuiz must be used within a QuizProvider");
+  if (uniqueIds.size !== ids.length) {
+    throw new Error("Duplicate question IDs detected in quizData.");
   }
-  return context;
+
+  dispatch(setInitialState(quizData));
+  console.log("QuizContextProvider renders");
+  return <>{children}</>;
 };
+
 // Adding PropTypes validation for runtime
 QuizProvider.propTypes = {
   quizData: PropTypes.shape({
@@ -52,6 +51,7 @@ QuizProvider.propTypes = {
         ]).isRequired,
         explanation: PropTypes.string,
         timeLimit: PropTypes.number,
+        points: PropTypes.number.isRequired,
       })
     ).isRequired,
     timeLimit: PropTypes.number,

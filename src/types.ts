@@ -26,7 +26,7 @@ interface QuizState {
   quizData?: QuizData;
   status?: "idle" | "started" | "finished";
   currentQuestionIndex?: number; //starts from 1
-  maxVisibleQuestionIndex?: number;
+  maxVisibleQuestionIndex?: number; //starts from 1
   userResponses?: UserResponse[];
   score?: number;
   timer?: number;

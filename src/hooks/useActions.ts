@@ -1,9 +1,10 @@
-import { startQuiz } from "../redux/slices/quizSlice";
+import { useTimerManager } from "../redux";
+import { answerAction, startQuizAction } from "../redux/slices/quizSlice";
 import { useAppDispatch, useAppSelector } from "../redux/store";
-import { startQuestionTimer, startQuizTimer } from "../redux/timerSideEffects";
 
 export const useActions = () => {
   const dispatch = useAppDispatch();
+  const timerManager = useTimerManager();
   const currentQuestionId = useAppSelector((state) => {
     if (state.quiz.quizData && state.quiz.currentQuestionIndex !== undefined) {
       return state.quiz.quizData.questions[state.quiz.currentQuestionIndex - 1]
@@ -11,10 +12,13 @@ export const useActions = () => {
     }
     return "";
   });
-  const startQuizAction = () => {
-    dispatch(startQuiz());
-    startQuizTimer(dispatch);
-    startQuestionTimer(dispatch, currentQuestionId);
+  const startQuiz = () => {
+    dispatch(startQuizAction());
+    timerManager.startQuizTimer();
+    timerManager.startQuestionTimer(currentQuestionId);
   };
-  return { startQuizAction };
+  const answerQuestion = (response: UserResponse) => {
+    dispatch(answerAction(response));
+  };
+  return { startQuiz, answerQuestion };
 };

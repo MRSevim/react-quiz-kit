@@ -13,7 +13,7 @@ interface Question {
   correctAnswer: string | string[]; // Correct answer (string or array for multiple answers)
   explanation?: string; // Optional explanation for the correct answer
   timeLimit?: number; // Optional time limit for this question in seconds
-  points: number;
+  points?: number;
 }
 
 interface UserResponse {
@@ -24,7 +24,8 @@ interface UserResponse {
 
 interface QuizState {
   quizData?: QuizData;
-  currentQuestionIndex?: number;
+  status?: "idle" | "started" | "finished";
+  currentQuestionIndex?: number; //starts from 1
   maxVisibleQuestionIndex?: number;
   userResponses?: UserResponse[];
   score?: number;

@@ -7,11 +7,12 @@ export const quizSlice = createSlice({
   name: "quizState",
   initialState: initialState,
   reducers: {
-    setInitialState: (state, action: PayloadAction<QuizData>) => {
+    setInitialStateAction: (state, action: PayloadAction<QuizData>) => {
       const quizData = action.payload;
       state.quizData = quizData;
       state.currentQuestionIndex = 1;
       state.maxVisibleQuestionIndex = 1;
+      state.status = "idle";
       state.score = 0;
       state.questionTimers = [];
       if (quizData.timeLimit !== undefined) {
@@ -27,21 +28,15 @@ export const quizSlice = createSlice({
         }
       });
     },
-    startQuiz: (state) => {
-      if (state.quizData) {
-        const quiztimeLimit = state.quizData.timeLimit;
-
-        if (quiztimeLimit !== undefined) {
-          state.timer = quiztimeLimit;
-        }
-      }
+    startQuizAction: (state) => {
+      state.status = "started";
     },
-    decrementQuizTimer: (state) => {
+    decrementQuizTimerAction: (state) => {
       if (state.timer && state.timer > 0) {
         state.timer -= 1;
       }
     },
-    decrementQuestionTimer: (state) => {
+    decrementQuestionTimerAction: (state) => {
       if (state.currentQuestionIndex !== undefined && state.quizData) {
         const currentQuestionId =
           state.quizData.questions[state.currentQuestionIndex - 1].id;
@@ -56,15 +51,20 @@ export const quizSlice = createSlice({
         });
       }
     },
+    answerAction: (state, action: PayloadAction<UserResponse>) => {
+      const { questionId, selectedAnswer, isCorrect } = action.payload;
+      console.log(questionId, selectedAnswer);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const {
-  setInitialState,
-  startQuiz,
-  decrementQuizTimer,
-  decrementQuestionTimer,
+  setInitialStateAction,
+  decrementQuizTimerAction,
+  decrementQuestionTimerAction,
+  startQuizAction,
+  answerAction,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;

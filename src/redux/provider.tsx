@@ -4,22 +4,15 @@ import { Provider } from "react-redux";
 import { createQuizStore, useAppDispatch } from "./store";
 import { setInitialStateAction } from "./slices/quizSlice";
 import { TimerManager } from "./timerManager";
+import { TimerManagerContext } from "./contexts/TimerManagerContext";
+import { PropsContext } from "./contexts/PropsContext";
 
 type Props = {
   children: React.ReactNode;
   quizData: QuizData;
+  preventAnswersToOtherThanCurrent?: boolean;
 };
-const TimerManagerContext = createContext<TimerManager | null>(null);
 
-export const useTimerManager = () => {
-  const context = useContext(TimerManagerContext);
-  if (!context) {
-    throw new Error(
-      "useTimerManager must be used within a TimerManagerProvider"
-    );
-  }
-  return context;
-};
 export const QuizProvider = (props: Props) => {
   const store = React.useMemo(() => createQuizStore(), []); // Create a separate store for each provider
   return (
@@ -29,8 +22,13 @@ export const QuizProvider = (props: Props) => {
   );
 };
 
-const QuizContextProvider = ({ children, quizData }: Props) => {
+const QuizContextProvider = ({
+  children,
+  quizData,
+  preventAnswersToOtherThanCurrent,
+}: Props) => {
   const dispatch = useAppDispatch();
+
   const timerManager = React.useMemo(
     () => new TimerManager(dispatch),
     [dispatch]
@@ -44,10 +42,11 @@ const QuizContextProvider = ({ children, quizData }: Props) => {
   }
 
   dispatch(setInitialStateAction(quizData));
-  console.log("QuizContextProvider renders");
   return (
     <TimerManagerContext.Provider value={timerManager}>
-      {children}
+      <PropsContext.Provider value={{ preventAnswersToOtherThanCurrent }}>
+        {children}
+      </PropsContext.Provider>
     </TimerManagerContext.Provider>
   );
 };
@@ -70,7 +69,7 @@ QuizProvider.propTypes = {
         ]).isRequired,
         explanation: PropTypes.string,
         timeLimit: PropTypes.number,
-        points: PropTypes.number.isRequired,
+        points: PropTypes.number,
       })
     ).isRequired,
     timeLimit: PropTypes.number,

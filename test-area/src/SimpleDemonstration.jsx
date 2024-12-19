@@ -1,118 +1,73 @@
 import { useState } from "react";
-import { QuizProvider, useQuiz, useActions } from "react-quiz-kit";
-import { SimpleDemonstration } from "./SimpleDemonstration";
-function App() {
-  const quizData = {
-    title: "Sample Quiz",
-    questions: [
-      {
-        id: "q1",
-        text: "What is 2+2?",
-        type: "multiple-choice",
-        options: ["3", "4"],
-        correctAnswer: "4",
-        points: 5,
-        timeLimit: 60,
-      },
-      {
-        id: "q2",
-        text: "Is 2+2=4?",
-        type: "true-false",
-        correctAnswer: "true",
-        points: 5,
-        timeLimit: 60,
-      },
-      {
-        id: "q3",
-        text: "What is 2+2?",
-        type: "short-answer",
-        correctAnswer: "4",
-        points: 5,
-        timeLimit: 60,
-      },
-      {
-        id: "q4",
-        text: "Which is number?",
-        type: "multiple-choice",
-        options: ["3", "4"],
-        correctAnswer: ["3", "4"],
-        points: 5,
-        timeLimit: 60,
-      },
-    ],
-    timeLimit: 60,
-  };
+import { QuizProvider, useActions, useQuiz } from "../../dist";
+
+const quizData = {
+  title: "Sample Quiz",
+  questions: [
+    {
+      id: "q1",
+      text: "What is 2+2?",
+      type: "multiple-choice",
+      options: ["3", "4"],
+      correctAnswer: "4",
+      points: 5,
+      timeLimit: 60,
+    },
+    {
+      id: "q2",
+      text: "Is 2+2=4?",
+      type: "true-false",
+      correctAnswer: "true",
+      points: 5,
+      timeLimit: 60,
+    },
+    {
+      id: "q3",
+      text: "What is 2+2?",
+      type: "short-answer",
+      correctAnswer: "4",
+      points: 5,
+      timeLimit: 60,
+    },
+    {
+      id: "q4",
+      text: "Which is number?",
+      type: "multiple-choice",
+      options: ["3", "4"],
+      correctAnswer: ["3", "4"],
+      points: 5,
+      timeLimit: 60,
+    },
+  ],
+  timeLimit: 60,
+};
+
+export const SimpleDemonstration = () => {
   return (
-    <>
-      {/*     <QuizProvider quizData={quizData}>
-        <InnerApp id={1} />
-      </QuizProvider>
-      <QuizProvider quizData={quizData} preventAnswersToOtherThanCurrent={true}>
-        <InnerApp id={2} />
-      </QuizProvider> */}
-      <SimpleDemonstration />
-    </>
+    <QuizProvider quizData={quizData} preventAnswersToOtherThanCurrent={true}>
+      <Inner />
+    </QuizProvider>
   );
-}
-const InnerApp = ({ id }) => {
+};
+
+const Inner = () => {
   const questions = useQuiz((state) => state.quizData.questions);
   const score = useQuiz((state) => state.score);
-  const maxVisibleQuestionIndex = useQuiz(
-    (state) => state.maxVisibleQuestionIndex
-  );
-  const {
-    startQuiz,
-    finishQuiz,
-    setQuizTimer,
-    setScore,
-    setCurrentQuestionIndex,
-    setMaxVisibleQuestionIndex,
-  } = useActions();
+
+  const { startQuiz, finishQuiz } = useActions();
 
   return (
     <>
       <QuizTimer />
       {score !== undefined && <>--Score:{score}</>}
-      {maxVisibleQuestionIndex !== undefined && (
-        <>--MaxVisible:{maxVisibleQuestionIndex}</>
-      )}
-      --
       <button onClick={() => startQuiz()}>Start</button>
-      <button
-        onClick={() => {
-          setQuizTimer(30);
-        }}
-      >
-        Set quiz timer to 30
-      </button>
-      <button
-        onClick={() => {
-          setScore(30);
-        }}
-      >
-        Set score to 30
-      </button>
-      <button
-        onClick={() => {
-          setCurrentQuestionIndex(3);
-        }}
-      >
-        Set current question to 3
-      </button>
-      <button
-        onClick={() => {
-          setMaxVisibleQuestionIndex(4);
-        }}
-      >
-        Set max visible question to 4
-      </button>
       {questions.map((item, i) => {
         return (
           <div key={item.id}>
             {i + 1}. {item.text} {"  "}
             <QuestionTimer item={item} />
             <br></br>
-            <Question item={item} id={id} />
+            <Question item={item} />
           </div>
         );
       })}
@@ -128,10 +83,9 @@ const InnerApp = ({ id }) => {
   );
 };
 
-const Question = ({ item, id }) => {
+const Question = ({ item }) => {
   const [answer, setAnswer] = useState("");
-  const { answerQuestion, nextQuestion, prevQuestion, setQuestionTimer } =
-    useActions();
+  const { answerQuestion, nextQuestion, prevQuestion } = useActions();
   return (
     <>
       {item.type === "multiple-choice" &&
@@ -139,11 +93,9 @@ const Question = ({ item, id }) => {
           <div key={option}>
             <input
               type={Array.isArray(item.correctAnswer) ? "checkbox" : "radio"}
-              id={id + item.id + option}
+              id={item.id + option}
               name={
-                Array.isArray(item.correctAnswer)
-                  ? id + item.id + option
-                  : id + item.id
+                Array.isArray(item.correctAnswer) ? item.id + option : item.id
               }
               value={option}
               onChange={(e) => {
@@ -161,19 +113,19 @@ const Question = ({ item, id }) => {
                 }
               }}
             ></input>
-            <label htmlFor={id + item.id + option}>{option}</label>
+            <label htmlFor={item.id + option}>{option}</label>
           </div>
         ))}
       {item.type === "true-false" && (
         <>
           <input
             type="checkbox"
-            id={id + item.id}
+            id={item.id}
             onChange={(e) => {
               setAnswer(e.target.checked === true ? "true" : "false");
             }}
           ></input>
-          <label htmlFor={id + item.id}>Check if true</label>
+          <label htmlFor={item.id}>Check if true</label>
           <br></br>
         </>
       )}
@@ -181,7 +133,7 @@ const Question = ({ item, id }) => {
         <>
           <input
             type="text"
-            id={id + item.id}
+            id={item.id}
             onChange={(e) => {
               setAnswer(e.target.value);
             }}
@@ -212,14 +164,6 @@ const Question = ({ item, id }) => {
       >
         {" "}
         Next question
-      </button>
-      <button
-        onClick={() => {
-          setQuestionTimer({ questionId: item.id, timer: 30 });
-        }}
-      >
-        {" "}
-        Set question timer to 30
       </button>
     </>
   );
@@ -256,5 +200,3 @@ const Timer = ({ timer }) => {
     </>
   );
 };
-
-export default App;

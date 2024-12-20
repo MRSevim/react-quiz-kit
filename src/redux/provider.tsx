@@ -68,6 +68,7 @@ QuizProvider.propTypes = {
           PropTypes.arrayOf(PropTypes.string),
         ]).isRequired,
         explanation: PropTypes.string,
+        incorrectMessage: PropTypes.string,
         timeLimit: PropTypes.number,
         points: PropTypes.number,
       })

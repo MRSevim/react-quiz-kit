@@ -8,10 +8,13 @@
   "scripts": {
     "server": "tsc --watch",
     "build": "tsc",
-    "serve": "node dist/index.js",
-    "start": "cd ./test-area && npm run dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd ./test-area && npm run dev"
   },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MRSevim/react-quiz-kit.git"

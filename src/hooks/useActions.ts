@@ -7,6 +7,7 @@ import {
   nextQuestionAction,
   prevQuestionAction,
   setCurrentQuestionIndexAction,
+  setInitialStateAction,
   setMaxVisibleQuestionIndexAction,
   setQuestionTimerAction,
   setQuizTimerAction,
@@ -130,6 +131,9 @@ export const useActions = () => {
       throw Error("There is no question with that index");
     }
   };
+  const resetQuiz = () => {
+    dispatch(setInitialStateAction(quizData));
+  };
 
   return {
     setCurrentQuestionIndex,
@@ -143,5 +147,6 @@ export const useActions = () => {
     prevQuestion,
     finishQuiz,
     calculatePoints,
+    resetQuiz,
   };
 };

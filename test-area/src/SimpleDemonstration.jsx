@@ -54,10 +54,11 @@ const Inner = () => {
   const questions = useQuiz((state) => state.quizData.questions);
   const score = useQuiz((state) => state.score);
 
-  const { startQuiz, finishQuiz } = useActions();
+  const { startQuiz, finishQuiz, resetQuiz } = useActions();
 
   return (
     <>
+      <>{score !== undefined && <>Score:{score}</>}</>
       <QuizTimer />
       {score !== undefined && <>--Score:{score}</>}
       <button onClick={() => startQuiz()}>Start</button>
@@ -77,6 +78,13 @@ const Inner = () => {
         }}
       >
         Finish
+      </button>
+      <button
+        onClick={() => {
+          resetQuiz();
+        }}
+      >
+        Reset
       </button>
       <br></br>
     </>

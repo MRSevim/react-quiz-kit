@@ -24,7 +24,12 @@ export const quizSlice = createSlice({
       if (quizData.timeLimit !== undefined) {
         state.timer = quizData.timeLimit;
       }
-
+      state.status = "idle";
+      state.currentQuestionIndex = 1;
+      state.maxVisibleQuestionIndex = 1;
+      state.score = undefined;
+      state.questionTimers = [];
+      state.userResponses = [];
       quizData.questions.forEach((question) => {
         if (question.timeLimit !== undefined) {
           state.questionTimers.push({
@@ -88,6 +93,7 @@ export const quizSlice = createSlice({
         preventAnswersToOtherThanCurrent?: boolean;
       }>
     ) => {
+      startedCheck(state);
       const {
         response: { questionId, selectedAnswer },
         preventAnswersToOtherThanCurrent,

@@ -32,12 +32,12 @@
   },
   "homepage": "https://github.com/MRSevim/react-quiz-kit#readme",
   "devDependencies": {
-    "typescript": "^5.7.2",
     "@reduxjs/toolkit": "^2.4.0",
     "@types/react": "^18.3.13",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "typescript": "^5.7.2"
   },
   "peerDependencies": {
     "react": ">=18"

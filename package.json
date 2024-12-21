@@ -1,6 +1,6 @@
 {
   "name": "react-quiz-kit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "library for creating quizzes on react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

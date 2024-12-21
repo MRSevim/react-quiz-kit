@@ -15,6 +15,7 @@ import {
   startQuizAction,
 } from "../redux/slices/quizSlice";
 import { useAppDispatch, useAppSelector } from "../redux/store";
+import { AnswerParam, SetQuestionTimerParam } from "..";
 
 export const useActions = () => {
   const dispatch = useAppDispatch();
@@ -42,7 +43,7 @@ export const useActions = () => {
     }
   };
 
-  const answerQuestion = (response: Partial<UserResponse>) => {
+  const answerQuestion = (response: AnswerParam) => {
     dispatch(
       answerAction({
         response,
@@ -99,7 +100,7 @@ export const useActions = () => {
     dispatch(setQuizTimerAction(number));
   };
 
-  const setQuestionTimer = (param: SetQuestionTimerActionParam) => {
+  const setQuestionTimer = (param: SetQuestionTimerParam) => {
     dispatch(setQuestionTimerAction(param));
   };
 

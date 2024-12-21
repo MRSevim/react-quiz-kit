@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { AnswerParam, QuizData, QuizState, SetQuestionTimerParam } from "../..";
 
 const initialState: QuizState = {
   quizData: {
@@ -89,7 +90,7 @@ export const quizSlice = createSlice({
     answerAction: (
       state,
       action: PayloadAction<{
-        response: Partial<UserResponse>;
+        response: AnswerParam;
         preventAnswersToOtherThanCurrent?: boolean;
       }>
     ) => {
@@ -159,7 +160,7 @@ export const quizSlice = createSlice({
     },
     setQuestionTimerAction: (
       state,
-      action: PayloadAction<SetQuestionTimerActionParam>
+      action: PayloadAction<SetQuestionTimerParam>
     ) => {
       const { questionId, timer } = action.payload;
 

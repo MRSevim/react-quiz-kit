@@ -1,4 +1,4 @@
-interface QuizData {
+export interface QuizData {
   //This is your quizData prop's (passed to QuizProvider) interface.
   //This data does not change during the quiz.
   title: string; // Title of the quiz
@@ -7,7 +7,7 @@ interface QuizData {
   timeLimit?: number; // Optional time limit for the entire quiz in seconds
 }
 
-interface Question {
+export interface Question {
   id: string; // ID of the question
   text: string; // The question text
   type: "multiple-choice" | "true-false" | "short-answer"; // Type of question
@@ -19,14 +19,20 @@ interface Question {
   points?: number; //Optional points for the question
 }
 
-interface UserResponse {
+export interface UserResponse {
   questionId: string; // ID of the question
   selectedAnswer: string | string[]; // Answer(s) chosen by the user
   isCorrect: boolean; // Whether the answer was correct, if correct answer was an array,
   //meaning it had multiple answers, all the values inside correctAnswer array have to have a matching value in selectedAnswer and vise versa for this to be true.
 }
 
-interface QuizState {
+export interface AnswerParam {
+  //this is the interface of the param passed to the answerQuestion
+  questionId: string; // ID of the question
+  selectedAnswer: string | string[]; // Answer(s) chosen by the user
+}
+
+export interface QuizState {
   //This is your whole state.
   //Use this state when using useQuiz hook and get want you want from it.
   quizData: QuizData; //quizData passed into QuizProvider
@@ -39,8 +45,8 @@ interface QuizState {
   questionTimers: { questionId: string; timer: number }[]; //current timers of questions. Starts counting down from timer limits of each question if question is current.
 }
 
-interface SetQuestionTimerActionParam {
-  //This is the interface of the param passed to setQuestionTimer
+export interface SetQuestionTimerParam {
+  //This is the interface of the param passed to the setQuestionTimer
   questionId: string;
   timer: number;
 }

@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { QuizProvider, useActions, useQuiz } from "react-quiz-kit";
+import {
+  Question,
+  QuizData,
+  QuizProvider,
+  QuizState,
+  useActions,
+  useQuiz,
+} from "react-quiz-kit";
 
-const quizData = {
+const quizData: QuizData = {
   title: "Sample Quiz",
   questions: [
     {
@@ -42,7 +49,7 @@ const quizData = {
   timeLimit: 60,
 };
 
-export const SimpleDemonstration = () => {
+const App = () => {
   return (
     <QuizProvider quizData={quizData} preventAnswersToOtherThanCurrent={true}>
       <Inner />
@@ -67,7 +74,7 @@ const Inner = () => {
             {i + 1}. {item.text} {"  "}
             <QuestionTimer item={item} />
             <br></br>
-            <Question item={item} />
+            <QuestionComp item={item} />
           </div>
         );
       })}
@@ -90,12 +97,13 @@ const Inner = () => {
   );
 };
 
-const Question = ({ item }) => {
-  const [answer, setAnswer] = useState("");
+const QuestionComp = ({ item }: { item: Question }) => {
+  const [answer, setAnswer] = useState<string | string[]>("");
   const { answerQuestion, nextQuestion, prevQuestion } = useActions();
   return (
     <>
       {item.type === "multiple-choice" &&
+        item.options &&
         item.options.map((option) => (
           <div key={option}>
             <input
@@ -185,7 +193,7 @@ const QuizTimer = () => {
   );
 };
 
-const QuestionTimer = ({ item }) => {
+const QuestionTimer = ({ item }: { item: Question }) => {
   const timer = useQuiz(
     (state) =>
       state.questionTimers.find((timer) => timer.questionId === item.id)?.timer
@@ -199,7 +207,7 @@ const QuestionTimer = ({ item }) => {
   );
 };
 
-const Timer = ({ timer }) => {
+const Timer = ({ timer }: { timer: QuizState["timer"] }) => {
   return (
     <>
       {timer !== undefined && timer}
@@ -207,3 +215,5 @@ const Timer = ({ timer }) => {
     </>
   );
 };
+
+export default App;

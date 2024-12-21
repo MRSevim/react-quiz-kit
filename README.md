@@ -25,7 +25,7 @@ yarn add react-quiz-kit
 
 ```jsx
 import { useState } from "react";
-import { QuizProvider, useActions, useQuiz } from "../../dist";
+import { QuizProvider, useActions, useQuiz } from "react-quiz-kit";
 
 const quizData = {
   title: "Sample Quiz",
@@ -349,7 +349,7 @@ return (
 ## Typescript References
 
 ```tsx
-interface QuizData {
+export interface QuizData {
   //This is your quizData prop's (passed to QuizProvider) interface.
   //This data does not change during the quiz.
   title: string; // Title of the quiz
@@ -358,7 +358,7 @@ interface QuizData {
   timeLimit?: number; // Optional time limit for the entire quiz in seconds
 }
 
-interface Question {
+export interface Question {
   id: string; // ID of the question
   text: string; // The question text
   type: "multiple-choice" | "true-false" | "short-answer"; // Type of question
@@ -370,14 +370,20 @@ interface Question {
   points?: number; //Optional points for the question
 }
 
-interface UserResponse {
+export interface UserResponse {
   questionId: string; // ID of the question
   selectedAnswer: string | string[]; // Answer(s) chosen by the user
   isCorrect: boolean; // Whether the answer was correct, if correct answer was an array,
-  // meaning it had multiple answers, all the values inside correctAnswer array have to have a matching value in selectedAnswer and vise versa for this to be true.
+  //meaning it had multiple answers, all the values inside correctAnswer array have to have a matching value in selectedAnswer and vise versa for this to be true.
 }
 
-interface QuizState {
+export interface AnswerParam {
+  //this is the interface of the param passed to the answerQuestion
+  questionId: string; // ID of the question
+  selectedAnswer: string | string[]; // Answer(s) chosen by the user
+}
+
+export interface QuizState {
   //This is your whole state.
   //Use this state when using useQuiz hook and get want you want from it.
   quizData: QuizData; //quizData passed into QuizProvider
@@ -390,12 +396,14 @@ interface QuizState {
   questionTimers: { questionId: string; timer: number }[]; //current timers of questions. Starts counting down from timer limits of each question if question is current.
 }
 
-interface SetQuestionTimerActionParam {
-  //This is the interface of the param passed to setQuestionTimer
+export interface SetQuestionTimerParam {
+  //This is the interface of the param passed to the setQuestionTimer
   questionId: string;
   timer: number;
 }
 ```
+
+If you are using Typescript in your project, all the types above are exported from library, so you can import them and use them whenever needed.
 
 ## Error handling
 
@@ -418,11 +426,12 @@ Steps to contribute:
 
 1. Clone the repo
 2. run `npm install` on root file and inside test-area
-3. In test-area file, run `npm install ../` to link the root path as dependency to test-area
+3. In test-area file, run `npm run install-local` to link the root path as dependency to test-area
 4. run `npm run server` in a terminal in root file
-5. run `npm run start` in a terminal in root file
+5. run `npm run dev` in a terminal in test-area
 
 Changes you make inside the src file should be reflected inside dist file. You can then test the changes in http://localhost:5173/.
+If you wanna test in typescript go through the steps from 2 to 5 but for test-area-ts instead of test-area
 
 ## Licence
 

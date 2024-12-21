@@ -6,6 +6,7 @@ import { setInitialStateAction } from "./slices/quizSlice";
 import { TimerManager } from "./timerManager";
 import { TimerManagerContext } from "./contexts/TimerManagerContext";
 import { PropsContext } from "./contexts/PropsContext";
+import { QuizData } from "..";
 
 type Props = {
   children: React.ReactNode;

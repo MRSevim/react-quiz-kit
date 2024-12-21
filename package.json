@@ -1,6 +1,6 @@
 {
   "name": "react-quiz-kit",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "library for creating quizzes on react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,8 @@
   "scripts": {
     "server": "tsc --watch",
     "build": "tsc",
-    "start": "cd ./test-area && npm run dev"
+    "start": "cd ./test-area && npm run dev",
+    "start-ts": "cd ./test-area-ts && npm run dev"
   },
   "files": [
     "dist",
